@@ -2,14 +2,17 @@
 #define EVENTS
 #include <string>
 #include <vector>
+#include <iostream>
+
 class event {
     public:
         std::string getDesc();
         std::vector< std::vector<std::string> > getChildren();
-        void action();
-        event(std::string desc, std::vector< std::vector<std::string> > children);
+        event(std::string name, std::string desc, std::vector< std::vector<std::string> > children);
     private:
         std::string desc;
         std::vector< std::vector<std::string> > children;
 };
+
+void makeEvents();
 #endif
