@@ -4,7 +4,7 @@
 #include <vector>
 #include <iostream>
 
-class event {
+class event { // event structure forward declaration
     public:
         std::string getDesc();
         std::vector< std::vector<std::string> > getChildren();

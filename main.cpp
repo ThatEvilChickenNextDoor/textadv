@@ -9,31 +9,41 @@ using namespace std;
 
 int main() {
     makeEvents();
-    string currentEvent = "event000";
-    event * cur;
-    cur = eventTree.find("event000")->second;
-    while (cur != eventTree.end()->second) {
-        cout << cur->getDesc() << '\n' << endl;
+    string currentEvent = "event000"; // keep track of current event, start at the first event
+    event * cur = eventTree.find("event000")->second; // create event pointer, point at first event
+    while (cur != eventTree.end()->second) { // as long as cur points to a valid event, do game loop
+        cout << cur->getDesc() << endl;
         auto children = cur->getChildren();
-        for (vector<string> option : children) {
-            cout << option[0] << endl;
-        }
+        if (children[0].empty()) { // if event has no children, end the story
+            goto end; // look you code purists sometimes goto works just fine ok get off my back
+        } 
         string in;
         bool valid = false;
         while (!valid) {
-            cin >> in;
-            int choice = stoi(in);
+            cout << endl;
+            for (vector<string> option : children) { // list option names
+            cout << option[0] << endl;
+            }
+            cin >> in; // read choice and sanitize input
+            int choice;
+            try {
+                choice = stoi(in);
+            } catch (const std::invalid_argument& ia) {
+                cout << "why would you do this" << endl;
+                continue;
+            }
             choice--;
             if (choice >= 0 && choice < (long int)children.size()){
                 valid = true;
-                currentEvent = children[choice][1];
-                cur = eventTree.find(currentEvent)->second;
+                currentEvent = children[choice][1]; // update currentEvent to the next event
+                cur = eventTree.find(currentEvent)->second; // point cur to next event and loop
             } else{
                 cout << "no" << endl;
             }
         }
     }
-    cout << "event not found: " << currentEvent << endl;
+    cout << "event not found: " << currentEvent << endl; // if cur points to invalid event (event not found) loop exits and ends here, list event that wasn't found
     return 1;
-    //return 0;
+    end: // end the story!
+    return 0;
 }
