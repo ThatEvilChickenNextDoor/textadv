@@ -14,15 +14,15 @@ int main() {
     while (cur != eventTree.end()->second) { // as long as cur points to a valid event, do game loop
         cout << cur->getDesc() << endl;
         auto children = cur->getChildren();
-        if (children[0].empty()) { // if event has no children, end the story
+        if (children.empty()) { // if event has no children, end the story
             goto end; // look you code purists sometimes goto works just fine ok get off my back
         } 
         string in;
         bool valid = false;
         while (!valid) {
             cout << endl;
-            for (vector<string> option : children) { // list option names
-            cout << option[0] << endl;
+            for (option_t option : children) { // list option names
+            cout << option.text << endl;
             }
             cin >> in; // read choice and sanitize input
             int choice;
@@ -35,8 +35,9 @@ int main() {
             choice--;
             if (choice >= 0 && choice < (long int)children.size()){
                 valid = true;
-                currentEvent = children[choice][1]; // update currentEvent to the next event
+                currentEvent = children[choice].next; // update currentEvent to the next event
                 cur = eventTree.find(currentEvent)->second; // point cur to next event and loop
+                // TODO: handle effects logic here
             } else{
                 cout << "no" << endl;
             }
