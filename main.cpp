@@ -47,6 +47,7 @@ int main() {
                 for (std::string flag : optionsList[choice].effects) {
                     flags.insert(flag);
                 }
+                std::cout << optionsList[choice].onClickText << std::endl;
                 optionsList.clear();
             } else{
                 std::cout << "no" << std::endl;

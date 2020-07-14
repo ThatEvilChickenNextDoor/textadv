@@ -38,6 +38,7 @@ void makeEvents() { // makes events
         {
             option_t{
                 .text = "Go back",
+                .onClickText = "You went back.",
                 .next = "event000"
             }
         }
