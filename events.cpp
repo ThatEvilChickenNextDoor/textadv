@@ -21,25 +21,24 @@ void makeEvents() { // makes events
         "This is the beginning of the story!",
         {
             option_t{
-                .effects={},
-                .text = "(1) Option 1",
+                .effects = {"flag"},
+                .text = "Option 1",
                 .next = "event001"
             },
             option_t{
-                .effects={},
-                .text = "(2) Option 2",
+                .prereq = "flag",
+                .text = "Option 2",
                 .next = "event002"
             }
         }
         );
     new event(
         "event001",
-        "You picked option 1!",
+        "You picked option 1!\nNow go back.",
         {
             option_t{
-                .effects={},
-                .text = "(1) End story",
-                .next = "event_end"
+                .text = "Go back",
+                .next = "event000"
             }
         }
         );
@@ -48,8 +47,7 @@ void makeEvents() { // makes events
         "You picked option 2!",
         {
             option_t{
-                .effects={},
-                .text = "(1) End story",
+                .text = "End story",
                 .next = "event_end"
             }
         }

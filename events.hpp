@@ -6,6 +6,7 @@
 
 struct option_t {
     std::vector<std::string> effects; //currently does nothing
+    std::string prereq = "";
     std::string text;
     std::string next;
 };
