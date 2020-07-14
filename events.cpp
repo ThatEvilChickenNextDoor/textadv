@@ -29,6 +29,10 @@ void makeEvents() { // makes events
                 .prereq = "flag",
                 .text = "Option 2",
                 .next = "event002"
+            },
+            option_t {
+                .text = "Crash the game",
+                .next = "asefygasekfiuygaskyf"
             }
         }
         );
@@ -58,4 +62,14 @@ void makeEvents() { // makes events
         "This is the end of the story. Goodbye!",
         {}
         );
+    new event(
+        "newthing",
+        "Hey look, it's something new!",
+        {
+            option_t{
+                .text = "Intriguing",
+                .next = "event_end"
+            }
+        }
+    );
 }

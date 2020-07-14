@@ -6,25 +6,24 @@
 #include "globals.hpp"
 #include "events.hpp"
 
-int main() {
-    makeEvents();
-    flags.insert("");
+void startDay(int day){
     std::vector<option_t> optionsList;
-    std::string currentEvent = "event000"; // keep track of current event, start at the first event
-    event * cur = eventTree.find("event000")->second; // create event pointer, point at first event
+    std::string currentEvent = calendar[day]; // keep track of current event, start at the first event
+    event * cur = eventTree.find(currentEvent)->second; // create event pointer, point at first event
     while (cur != eventTree.end()->second) { // as long as cur points to a valid event, do game loop
         std::cout << cur->getDesc() << std::endl;
         auto children = cur->getChildren();
-        if (children.empty()) { // if event has no children, end the story
-            goto end; // look you code purists sometimes goto works just fine ok get off my back
-        } 
-        std::string in;
-        bool valid = false;
+        if (children.empty()) { // if event has no children, end the day
+            return;
+        }
         for (option_t option : children) { // populate valid options
             if (flags.count(option.prereq)){
                 optionsList.push_back(option);
             }
         }
+        // Handle input
+        std::string in;
+        bool valid = false;
         while (!valid) {
             std::cout << std::endl;
             for (uint8_t i = 0; i < optionsList.size(); i++) {
@@ -55,7 +54,19 @@ int main() {
         }
     }
     std::cout << "event not found: " << currentEvent << std::endl; // if cur points to invalid event (event not found) loop exits and ends here, list event that wasn't found
-    return 1;
-    end: // end the story!
+    throw 404;
+}
+
+int main() {
+    makeEvents();
+    flags.insert("");
+    calendar.push_back("event000");
+    calendar.push_back("event000");
+    calendar.push_back("newthing");
+    for (uint8_t i = 0; i < calendar.size(); i++) {
+        printf("It's day %u.\n", i + 1);
+        startDay(i);
+    }
+    
     return 0;
 }
