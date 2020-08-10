@@ -1,8 +1,14 @@
-all: main.o events.o
-	g++ -std=c++17 -Wall -Wpedantic main.o events.o
-main.o: globals.hpp events.hpp main.cpp
-	g++ -c -o main.o main.cpp -std=c++17 -Wall -Wpedantic
-events.o: globals.hpp events.hpp events.cpp
-	g++ -c -o events.o events.cpp -std=c++17 -Wall -Wpedantic 
+CC=g++
+CFLAGS=-std=c++17 -Wall -Wpedantic
+DEPS = events.hpp globals.hpp
+OBJ = main.o events.o 
+
+%.o: %.cpp $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+textadv.out: $(OBJ)
+	$(CC) -o $@ $^ $(CFLAGS)
+
+.PHONY=clean
 clean:
 	rm *.out *.o
