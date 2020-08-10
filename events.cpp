@@ -21,18 +21,18 @@ void makeEvents() { // makes events
         "This is the beginning of the story!",
         {
             option_t{
-                .effects = {"flag"},
-                .text = "Option 1",
-                .next = "event001"
+                .effects{"flag"},
+                .text{"Option 1"},
+                .next{"event001"}
             },
             option_t{
-                .prereq = "flag",
-                .text = "Option 2",
-                .next = "event002"
+                .prereq{"flag"},
+                .text{"Option 2"},
+                .next{"event002"}
             },
             option_t {
-                .text = "Crash the game",
-                .next = "asefygasekfiuygaskyf"
+                .text{"Crash the game"},
+                .next{"asefygasekfiuygaskyf"}
             }
         }
         );
@@ -41,9 +41,9 @@ void makeEvents() { // makes events
         "You picked option 1!\nNow go back.",
         {
             option_t{
-                .text = "Go back",
-                .onClickText = "You went back.",
-                .next = "event000"
+                .text{"Go back"},
+                .onClickText{"You went back."},
+                .next{"event000"}
             }
         }
         );
@@ -52,8 +52,8 @@ void makeEvents() { // makes events
         "You picked option 2!",
         {
             option_t{
-                .text = "End story",
-                .next = "event_end"
+                .text{"End story"},
+                .next{"event_end"}
             }
         }
         );
@@ -67,8 +67,8 @@ void makeEvents() { // makes events
         "Hey look, it's something new!",
         {
             option_t{
-                .text = "Intriguing",
-                .next = "event_end"
+                .text{"Intriguing"},
+                .next{"event_end"}
             }
         }
     );

@@ -7,7 +7,7 @@
 #include "events.hpp"
 
 void startDay(int day){
-    std::vector<option_t> optionsList;
+    std::vector<option_t> optionsList{};
     std::string currentEvent = calendar[day]; // keep track of current event, start at the first event
     event * cur = eventTree.find(currentEvent)->second; // create event pointer, point at first event
     while (cur != eventTree.end()->second) { // as long as cur points to a valid event, do game loop
@@ -58,14 +58,21 @@ void startDay(int day){
 }
 
 int main() {
+    // initialize events and load into calendar
     makeEvents();
     flags.insert("");
     calendar.push_back("event000");
     calendar.push_back("event000");
     calendar.push_back("newthing");
+    // play events from calendar
     for (uint8_t i = 0; i < calendar.size(); i++) {
         printf("It's day %u.\n", i + 1);
-        startDay(i);
+        try{
+            startDay(i);
+        } catch (...) {
+            printf("Crash happened on day %u\n", i);
+            return 1;
+        }
     }
     
     return 0;

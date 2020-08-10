@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-std=c++17 -Wall -Wpedantic
+CFLAGS=-std=c++2a -Wall -Wextra -Wpedantic
 DEPS = events.hpp globals.hpp
 OBJ = main.o events.o 
 

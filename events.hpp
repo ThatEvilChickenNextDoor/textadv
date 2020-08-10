@@ -5,11 +5,11 @@
 #include <iostream>
 
 struct option_t {
-    std::vector<std::string> effects; //currently does nothing
-    std::string prereq = "";
-    std::string text;
-    std::string onClickText = "";
-    std::string next;
+    std::vector<std::string> effects{};
+    std::string prereq{};
+    std::string text{};
+    std::string onClickText{};
+    std::string next{};
 };
 
 class event { // event structure forward declaration
@@ -18,8 +18,8 @@ class event { // event structure forward declaration
         std::vector<option_t> getChildren();
         event(std::string name, std::string desc, std::vector<option_t> children);
     private:
-        std::string desc;
-        std::vector<option_t> children;
+        std::string desc{};
+        std::vector<option_t> children{};
 };
 
 void makeEvents();

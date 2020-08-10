@@ -33,3 +33,5 @@
 
 #VS Code configs
 .vscode/
+
+*.sav
