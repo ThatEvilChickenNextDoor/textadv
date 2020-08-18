@@ -1,4 +1,6 @@
 #include "cursed.hpp"
+#include <thread>
+#include <chrono>
 
 int main() {
     setlocale(LC_ALL, "");
@@ -15,7 +17,7 @@ int main() {
     refresh();
     getch();
     int offset = 0;
-    while(1) {
+    for (int i = 0; i < 5; i++) {
         move(y-1, 0);
         clrtoeol();
         scrl(1);
@@ -23,6 +25,7 @@ int main() {
         drawdatetime(dayssince(date::August/1/2019, ++offset), "After School");
         refresh();
         getch();
+        //std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
     endwin();
     return 0;

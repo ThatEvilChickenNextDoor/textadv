@@ -1,20 +1,20 @@
 #ifndef CURSED
 #define CURSED
-#include <ncurses.h>
+#include <curses.h>
 #include <vector>
 #include <set>
 #include <string>
 #include "date.h"
 
 void mvprintascii(int y, int x, std::vector<std::string> arr) {
-    for (uint i = 0; i < arr.size(); i++) {
+    for (uint8_t i = 0; i < arr.size(); i++) {
         mvprintw(y+i, x, arr[i].c_str());
     }
     return;
 }
 
 void mvprintasciiright(int y, int x, std::vector<std::string> arr) {
-    for (uint i = 0; i < arr.size(); i++) {
+    for (uint8_t i = 0; i < arr.size(); i++) {
         mvprintw(y+i, x-arr[i].size(), arr[i].c_str());
     }
     return;
