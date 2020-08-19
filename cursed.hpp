@@ -1,6 +1,10 @@
 #ifndef CURSED
 #define CURSED
-#include <curses.h>
+#ifdef _WIN64
+#include <ncurses/ncurses.h>
+#else
+#include <ncurses.h>
+#endif
 #include <vector>
 #include <set>
 #include <string>

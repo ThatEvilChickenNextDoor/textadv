@@ -24,8 +24,8 @@ int main() {
         drawborder();
         drawdatetime(dayssince(date::August/1/2019, ++offset), "After School");
         refresh();
-        getch();
-        //std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        //getch();
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
     endwin();
     return 0;
