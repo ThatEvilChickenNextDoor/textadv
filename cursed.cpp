@@ -1,4 +1,5 @@
 #include "cursed.hpp"
+#include <locale.h>
 #include <thread>
 #include <chrono>
 
@@ -22,10 +23,9 @@ int main() {
         clrtoeol();
         scrl(1);
         drawborder();
-        drawdatetime(dayssince(date::August/1/2019, ++offset), "After School");
+        randdatetime(dayssince(date::August/1/2019, ++offset), "After School");
         refresh();
-        //getch();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        getch();
     }
     endwin();
     return 0;
