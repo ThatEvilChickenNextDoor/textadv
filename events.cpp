@@ -15,7 +15,7 @@ event::event(std::string name, std::string desc, std::vector<option_t> children)
 }
 
 void makeEvents() { // makes events
-    std::cout << "Making events" << std::endl;
+    //std::cout << "Making events" << std::endl;
     new event(
         "event000",
         "This is the beginning of the story!",

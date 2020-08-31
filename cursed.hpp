@@ -67,7 +67,6 @@ std::string dayssince(date::sys_days since, int offset) {
     since += date::days(offset);
     return date::format("%m/%d %a", since);
 }
-#endif
 
 void randdatetime(std::string target, std::string time) {
     int timer = 0;
@@ -117,3 +116,4 @@ void randdatetime(std::string target, std::string time) {
     drawdatetime(target, time);
     return;
 }
+#endif

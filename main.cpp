@@ -5,13 +5,15 @@
 #include <set>
 #include "globals.hpp"
 #include "events.hpp"
+#include "cursed.hpp"
 
 void startDay(int day){
     std::vector<option_t> optionsList{};
     std::string currentEvent = calendar[day]; // keep track of current event, start at the first event
     event * cur = eventTree.find(currentEvent)->second; // create event pointer, point at first event
     while (cur != eventTree.end()->second) { // as long as cur points to a valid event, do game loop
-        std::cout << cur->getDesc() << std::endl;
+        mvprintwrap(10, 20, getmaxx(stdscr)-40, cur->getDesc());
+        refresh();
         auto children = cur->getChildren();
         if (children.empty()) { // if event has no children, end the day
             return;
@@ -25,12 +27,12 @@ void startDay(int day){
         std::string in;
         bool valid = false;
         while (!valid) {
-            std::cout << std::endl;
             for (uint8_t i = 0; i < optionsList.size(); i++) {
-                printf("(%u) ", i + 1);
-                std::cout << optionsList[i].text << std::endl;
+                mvprintwrap(35+i, 20, getmaxx(stdscr)-40, optionsList[i].text);
             }
-            std::cin >> in; // read choice and sanitize input
+            refresh();
+            getch();
+            /*std::cin >> in; // read choice and sanitize input
             int choice;
             try {
                 choice = stoi(in);
@@ -50,7 +52,7 @@ void startDay(int day){
                 optionsList.clear();
             } else{
                 std::cout << "no" << std::endl;
-            }
+            }*/
         }
     }
     std::cout << "event not found: " << currentEvent << std::endl; // if cur points to invalid event (event not found) loop exits and ends here, list event that wasn't found
@@ -58,6 +60,15 @@ void startDay(int day){
 }
 
 int main() {
+    // initialize ncurses window
+    setlocale(LC_ALL, "");
+    initscr();
+    cbreak();
+    noecho();
+    keypad(stdscr, TRUE);
+    scrollok(stdscr, true);
+    drawborder();
+    refresh();
     // initialize events and load into calendar
     makeEvents();
     flags.insert("");
@@ -66,7 +77,7 @@ int main() {
     calendar.push_back("newthing");
     // play events from calendar
     for (uint8_t i = 0; i < calendar.size(); i++) {
-        printf("It's day %u.\n", i + 1);
+        //printf("It's day %u.\n", i + 1);
         try{
             startDay(i);
         } catch (...) {
