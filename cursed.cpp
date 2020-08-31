@@ -25,6 +25,7 @@ int main() {
         drawborder();
         randdatetime(dayssince(date::August/1/2019, ++offset), "After School");
         refresh();
+        flushinp();
         getch();
     }
     endwin();
