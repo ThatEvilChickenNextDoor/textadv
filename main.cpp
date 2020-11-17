@@ -31,7 +31,25 @@ void startDay(int day){
                 mvprintwrap(35+i, 20, getmaxx(stdscr)-40, optionsList[i].text);
             }
             refresh();
-            getch();
+            int key = getch();
+            char s[5];
+            sprintf(s,"%4d", key);
+            printw(s);
+            switch(key) {
+                case KEY_UP :
+                    // do stuff
+                    break;
+                case KEY_ENTER :
+                    valid = true;
+                    currentEvent = "haha crash me";
+                    addch('d');
+                    refresh();
+                    break;
+                case KEY_BACKSPACE:
+                    break;
+                default :
+                    break;
+            }
             /*std::cin >> in; // read choice and sanitize input
             int choice;
             try {
@@ -66,7 +84,7 @@ int main() {
     cbreak();
     noecho();
     keypad(stdscr, TRUE);
-    scrollok(stdscr, true);
+    scrollok(stdscr, TRUE);
     drawborder();
     refresh();
     // initialize events and load into calendar
@@ -81,6 +99,7 @@ int main() {
         try{
             startDay(i);
         } catch (...) {
+            endwin();
             printf("Crash happened on day %u\n", i);
             return 1;
         }

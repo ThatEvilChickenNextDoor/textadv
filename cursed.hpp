@@ -51,6 +51,8 @@ void mvprintwrap(int y, int x, int wrap, std::string text) {
             offset = 0;
             y++;
         }
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    refresh();
     }
     return;
 }
