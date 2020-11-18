@@ -27,15 +27,15 @@ void startDay(int day){
         std::string in;
         bool valid = false;
         while (!valid) {
-            for (uint8_t i = 0; i < optionsList.size(); i++) {
+            for (int i = 0; i < optionsList.size(); i++) {
                 mvprintwrap(35+i, 20, getmaxx(stdscr)-40, optionsList[i].text);
             }
             refresh();
             int key = getch();
             char s[5];
-            sprintf(s,"%4d", key);
+            sprintf(s,"%04o", key);
             printw(s);
-            switch(key) {
+            /*switch(key) {
                 case KEY_UP :
                     // do stuff
                     break;
@@ -49,7 +49,7 @@ void startDay(int day){
                     break;
                 default :
                     break;
-            }
+            }*/
             /*std::cin >> in; // read choice and sanitize input
             int choice;
             try {
