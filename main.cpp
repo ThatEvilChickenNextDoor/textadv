@@ -9,11 +9,49 @@
 
 int X, Y; // global screen width and height
 
+event *cur;
+
+int handle_input(std::vector<option_t> &optionsList)
+{
+    unsigned int choice = 0;
+    while (1)
+    {
+        for (std::size_t i = 0; i < optionsList.size(); i++)
+        {
+            mvaddch(20 + i, 18, ' ');
+            mvprintwrap(20 + i, 20, X - 40, optionsList[i].text);
+        }
+        mvaddch(20 + choice, 18, '>');
+        refresh();
+        flushinp();
+        int key = getch();
+        switch (key)
+        {
+        case KEY_UP:
+            if (choice > 0)
+                choice--;
+            break;
+        case KEY_DOWN:
+            if (choice < optionsList.size() - 1)
+                choice++;
+            break;
+        case KEY_ENTER:
+        case '\n':
+            return choice;
+        case 'q':
+            endwin();
+            exit(0);
+        default:
+            break;
+        }
+    }
+}
+
 void startDay(int day)
 {
     std::vector<option_t> optionsList{};
-    std::string currentEvent = calendar[day];          // keep track of current event, start at the first event
-    event *cur = eventTree.find(currentEvent)->second; // create event pointer, point at first event
+    std::string currentEvent = calendar[day];               // keep track of current event, start at the first event
+    cur = eventTree.find(currentEvent)->second; // create event pointer, point at first event
     while (cur != eventTree.end()->second)
     { // as long as cur points to a valid event, do game loop
         erase();
@@ -34,48 +72,15 @@ void startDay(int day)
             }
         }
         // Handle input
-        bool valid = false;
-        unsigned int choice = 0;
-        while (!valid)
+        int choice = handle_input(optionsList);
+        currentEvent = optionsList[choice].next;
+        cur = eventTree.find(currentEvent)->second;
+        for (std::string flag : optionsList[choice].effects)
         {
-            for (std::size_t i = 0; i < optionsList.size(); i++)
-            {
-                mvaddch(20 + i, 18, ' ');
-                mvprintwrap(20 + i, 20, X - 40, optionsList[i].text);
-            }
-            mvaddch(20 + choice, 18, '>');
-            refresh();
-            flushinp();
-            int key = getch();
-            switch (key)
-            {
-            case KEY_UP:
-                if (choice > 0)
-                    choice--;
-                break;
-            case KEY_DOWN:
-                if (choice < optionsList.size() - 1)
-                    choice++;
-                break;
-            case KEY_ENTER:
-            case '\n':
-                valid = true;
-                currentEvent = optionsList[choice].next;
-                cur = eventTree.find(currentEvent)->second;
-                for (std::string flag : optionsList[choice].effects)
-                {
-                    flags.insert(flag);
-                }
-                optionsList.clear();
-                refresh();
-                break;
-            case 'q':
-                endwin();
-                exit(0);
-            default:
-                break;
-            }
+            flags.insert(flag);
         }
+        optionsList.clear();
+        refresh();
     }
     throw currentEvent;
 }
