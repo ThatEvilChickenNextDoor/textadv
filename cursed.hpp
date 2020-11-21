@@ -6,7 +6,6 @@
 #include <ncurses.h>
 #endif
 #include <vector>
-#include <set>
 #include <string>
 #include <cstring>
 #include "date.h"

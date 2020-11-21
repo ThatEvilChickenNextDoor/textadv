@@ -2,7 +2,6 @@
 #define EVENTS
 #include <string>
 #include <vector>
-#include <iostream>
 
 struct option_t
 {

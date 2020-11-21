@@ -1,15 +1,11 @@
 #include <iostream>
 #include <string>
-#include <limits>
 #include <vector>
-#include <set>
 #include "globals.hpp"
 #include "events.hpp"
 #include "cursed.hpp"
 
 int X, Y; // global screen width and height
-
-event *cur;
 
 int handle_input(std::vector<option_t> &optionsList)
 {
@@ -51,7 +47,7 @@ void startDay(int day)
 {
     std::vector<option_t> optionsList{};
     std::string currentEvent = calendar[day];               // keep track of current event, start at the first event
-    cur = eventTree.find(currentEvent)->second; // create event pointer, point at first event
+    event *cur = eventTree.find(currentEvent)->second; // create event pointer, point at first event
     while (cur != eventTree.end()->second)
     { // as long as cur points to a valid event, do game loop
         erase();
@@ -103,14 +99,12 @@ int main()
     init_ncurses();
     // initialize events and load into calendar
     makeEvents();
-    flags.insert("");
     calendar.push_back("event000");
     calendar.push_back("event000");
     calendar.push_back("newthing");
     // play events from calendar
     for (std::size_t i = 0; i < calendar.size(); i++)
     {
-        //printf("It's day %u.\n", i + 1);
         try
         {
             startDay(i);
