@@ -48,6 +48,7 @@ void startDay(int day){
                     refresh();
                     break;
                 case 'q' :
+                    endwin();
                     exit(1);
                 default :
                     break;
@@ -75,9 +76,7 @@ void startDay(int day){
             }*/
         }
     }
-    std::cout << "event not found: " << currentEvent << std::endl; // if cur points to invalid event (event not found) loop exits and ends here, list event that wasn't found
-    getch();
-    throw 404;
+    throw currentEvent;
 }
 
 void init_ncurses(){
@@ -106,12 +105,13 @@ int main() {
         //printf("It's day %u.\n", i + 1);
         try{
             startDay(i);
-        } catch (...) {
+        } catch (std::string e) {
             endwin();
-            printf("Crash happened on day %u\n", i);
+            std::cout << "Crash happened on day " <<  i << std::endl;
+            std::cout << "Event not found: " << e << std::endl;
             return 1;
         }
     }
-    
+    endwin();
     return 0;
 }
