@@ -9,49 +9,56 @@
 
 int X, Y; // global screen width and height
 
-void startDay(int day){
+void startDay(int day)
+{
     std::vector<option_t> optionsList{};
-    std::string currentEvent = calendar[day]; // keep track of current event, start at the first event
-    event * cur = eventTree.find(currentEvent)->second; // create event pointer, point at first event
-    while (cur != eventTree.end()->second) { // as long as cur points to a valid event, do game loop
-        mvprintwrap(10, 20, X-40, cur->getDesc());
+    std::string currentEvent = calendar[day];          // keep track of current event, start at the first event
+    event *cur = eventTree.find(currentEvent)->second; // create event pointer, point at first event
+    while (cur != eventTree.end()->second)
+    { // as long as cur points to a valid event, do game loop
+        mvprintwrap(10, 20, X - 40, cur->getDesc());
         refresh();
         auto children = cur->getChildren();
-        if (children.empty()) { // if event has no children, end the day
+        if (children.empty())
+        { // if event has no children, end the day
             return;
         }
-        for (option_t option : children) { // populate valid options
-            if (flags.count(option.prereq)){
+        for (option_t option : children)
+        { // populate valid options
+            if (flags.count(option.prereq))
+            {
                 optionsList.push_back(option);
             }
         }
         // Handle input
-        std::string in;
         bool valid = false;
-        while (!valid) {
-            for (std::size_t i = 0; i < optionsList.size(); i++) {
-                mvprintwrap(20+i, 20, X-40, optionsList[i].text);
+        while (!valid)
+        {
+            for (std::size_t i = 0; i < optionsList.size(); i++)
+            {
+                mvprintwrap(20 + i, 20, X - 40, optionsList[i].text);
             }
             refresh();
             flushinp();
             int key = getch();
-            switch(key) {
-                case KEY_UP :
-                    printw("yee");
-                    break;
-                case KEY_ENTER :
-                case '\n' :
-                    valid = true;
-                    currentEvent = "haha crash me";
-                    cur = eventTree.find(currentEvent)->second;
-                    optionsList.clear();
-                    refresh();
-                    break;
-                case 'q' :
-                    endwin();
-                    exit(1);
-                default :
-                    break;
+            switch (key)
+            {
+            case KEY_UP:
+                printw("yee");
+                break;
+            case KEY_ENTER:
+            case '\n':
+                valid = true;
+                currentEvent = "haha crash me";
+                cur = eventTree.find(currentEvent)->second;
+                optionsList.clear();
+                refresh();
+                break;
+            case 'q':
+                endwin();
+                exit(0);
+            default:
+                break;
             }
             /*std::cin >> in; // read choice and sanitize input
             int choice;
@@ -79,7 +86,8 @@ void startDay(int day){
     throw currentEvent;
 }
 
-void init_ncurses(){
+void init_ncurses()
+{
     // initialize ncurses window
     setlocale(LC_ALL, "");
     initscr();
@@ -92,8 +100,9 @@ void init_ncurses(){
     refresh();
 }
 
-int main() {
-    init_ncurses();    
+int main()
+{
+    init_ncurses();
     // initialize events and load into calendar
     makeEvents();
     flags.insert("");
@@ -101,13 +110,17 @@ int main() {
     calendar.push_back("event000");
     calendar.push_back("newthing");
     // play events from calendar
-    for (std::size_t i = 0; i < calendar.size(); i++) {
+    for (std::size_t i = 0; i < calendar.size(); i++)
+    {
         //printf("It's day %u.\n", i + 1);
-        try{
+        try
+        {
             startDay(i);
-        } catch (std::string e) {
+        }
+        catch (const std::string &e)
+        {
             endwin();
-            std::cout << "Crash happened on day " <<  i << std::endl;
+            std::cout << "Crash happened on day " << i << std::endl;
             std::cout << "Event not found: " << e << std::endl;
             return 1;
         }
