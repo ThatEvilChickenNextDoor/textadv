@@ -16,11 +16,14 @@ void startDay(int day)
     event *cur = eventTree.find(currentEvent)->second; // create event pointer, point at first event
     while (cur != eventTree.end()->second)
     { // as long as cur points to a valid event, do game loop
+        erase();
+        drawborder();
         mvprintwrap(10, 20, X - 40, cur->getDesc());
         refresh();
         auto children = cur->getChildren();
         if (children.empty())
         { // if event has no children, end the day
+            getch();
             return;
         }
         for (option_t option : children)
@@ -32,25 +35,37 @@ void startDay(int day)
         }
         // Handle input
         bool valid = false;
+        unsigned int choice = 0;
         while (!valid)
         {
             for (std::size_t i = 0; i < optionsList.size(); i++)
             {
+                mvaddch(20 + i, 18, ' ');
                 mvprintwrap(20 + i, 20, X - 40, optionsList[i].text);
             }
+            mvaddch(20 + choice, 18, '>');
             refresh();
             flushinp();
             int key = getch();
             switch (key)
             {
             case KEY_UP:
-                printw("yee");
+                if (choice > 0)
+                    choice--;
+                break;
+            case KEY_DOWN:
+                if (choice < optionsList.size() - 1)
+                    choice++;
                 break;
             case KEY_ENTER:
             case '\n':
                 valid = true;
-                currentEvent = "haha crash me";
+                currentEvent = optionsList[choice].next;
                 cur = eventTree.find(currentEvent)->second;
+                for (std::string flag : optionsList[choice].effects)
+                {
+                    flags.insert(flag);
+                }
                 optionsList.clear();
                 refresh();
                 break;
@@ -60,27 +75,6 @@ void startDay(int day)
             default:
                 break;
             }
-            /*std::cin >> in; // read choice and sanitize input
-            int choice;
-            try {
-                choice = stoi(in);
-            } catch (const std::invalid_argument& ia) {
-                std::cout << "why would you do this" << std::endl;
-                continue;
-            }
-            choice--;
-            if (choice >= 0 && choice < (long int)optionsList.size()){
-                valid = true;
-                currentEvent = optionsList[choice].next; // update currentEvent to the next event
-                cur = eventTree.find(currentEvent)->second; // point cur to next event and loop
-                for (std::string flag : optionsList[choice].effects) {
-                    flags.insert(flag);
-                }
-                std::cout << optionsList[choice].onClickText << std::endl;
-                optionsList.clear();
-            } else{
-                std::cout << "no" << std::endl;
-            }*/
         }
     }
     throw currentEvent;
@@ -96,7 +90,6 @@ void init_ncurses()
     keypad(stdscr, TRUE);
     scrollok(stdscr, TRUE);
     getmaxyx(stdscr, Y, X);
-    drawborder();
     refresh();
 }
 
