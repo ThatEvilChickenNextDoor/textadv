@@ -7,12 +7,14 @@
 #include "events.hpp"
 #include "cursed.hpp"
 
+int X, Y; // global screen width and height
+
 void startDay(int day){
     std::vector<option_t> optionsList{};
     std::string currentEvent = calendar[day]; // keep track of current event, start at the first event
     event * cur = eventTree.find(currentEvent)->second; // create event pointer, point at first event
     while (cur != eventTree.end()->second) { // as long as cur points to a valid event, do game loop
-        mvprintwrap(10, 20, getmaxx(stdscr)-40, cur->getDesc());
+        mvprintwrap(10, 20, X-40, cur->getDesc());
         refresh();
         auto children = cur->getChildren();
         if (children.empty()) { // if event has no children, end the day
@@ -27,26 +29,26 @@ void startDay(int day){
         std::string in;
         bool valid = false;
         while (!valid) {
-            for (int i = 0; i < optionsList.size(); i++) {
-                mvprintwrap(20+i, 20, getmaxx(stdscr)-40, optionsList[i].text);
+            for (std::size_t i = 0; i < optionsList.size(); i++) {
+                mvprintwrap(20+i, 20, X-40, optionsList[i].text);
             }
             refresh();
+            flushinp();
             int key = getch();
-            char s[5];
-            sprintf(s,"%04o", key);
-            printw(s);
             switch(key) {
                 case KEY_UP :
-                    // do stuff
+                    printw("yee");
                     break;
                 case KEY_ENTER :
+                case '\n' :
                     valid = true;
                     currentEvent = "haha crash me";
-                    addch('d');
+                    cur = eventTree.find(currentEvent)->second;
+                    optionsList.clear();
                     refresh();
                     break;
-                case KEY_BACKSPACE:
-                    break;
+                case 'q' :
+                    exit(1);
                 default :
                     break;
             }
@@ -74,10 +76,11 @@ void startDay(int day){
         }
     }
     std::cout << "event not found: " << currentEvent << std::endl; // if cur points to invalid event (event not found) loop exits and ends here, list event that wasn't found
+    getch();
     throw 404;
 }
 
-int main() {
+void init_ncurses(){
     // initialize ncurses window
     setlocale(LC_ALL, "");
     initscr();
@@ -85,8 +88,13 @@ int main() {
     noecho();
     keypad(stdscr, TRUE);
     scrollok(stdscr, TRUE);
+    getmaxyx(stdscr, Y, X);
     drawborder();
     refresh();
+}
+
+int main() {
+    init_ncurses();    
     // initialize events and load into calendar
     makeEvents();
     flags.insert("");
@@ -94,7 +102,7 @@ int main() {
     calendar.push_back("event000");
     calendar.push_back("newthing");
     // play events from calendar
-    for (uint8_t i = 0; i < calendar.size(); i++) {
+    for (std::size_t i = 0; i < calendar.size(); i++) {
         //printf("It's day %u.\n", i + 1);
         try{
             startDay(i);
