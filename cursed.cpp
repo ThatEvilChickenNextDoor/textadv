@@ -3,6 +3,8 @@
 #include <thread>
 #include <chrono>
 
+// Test program to test cursed methods
+
 int main() {
     setlocale(LC_ALL, "");
     initscr();
@@ -15,9 +17,6 @@ int main() {
     drawborder();
     drawdatetime(dayssince(date::August/1/2019,0), "After School");
     mvprintwrap(10, 20, x-40, "Igor:\nMy name is Igor... I am delighted to make your acquaintance.\nThis place exists between dream and reality, mind and matter...\nIt is a room that only those who are bound by a \"contract\" may enter...\nIt may be that such a fate awaits you in the near future.\nNow then... Why don't you introduce yourself...?");
-    for (int i = 0; i < 2; i++) {
-        mvprintwrap(35+i, 20, x-40, "test");
-    }
     refresh();
     getch();
     int offset = 0;
