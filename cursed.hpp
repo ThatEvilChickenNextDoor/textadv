@@ -15,14 +15,14 @@
 #include <chrono>
 
 void mvprintascii(int y, int x, std::vector<std::string> arr) {
-    for (uint8_t i = 0; i < arr.size(); i++) {
+    for (std::size_t i = 0; i < arr.size(); i++) {
         mvprintw(y+i, x, arr[i].c_str());
     }
     return;
 }
 
 void mvprintasciiright(int y, int x, std::vector<std::string> arr) {
-    for (uint8_t i = 0; i < arr.size(); i++) {
+    for (std::size_t i = 0; i < arr.size(); i++) {
         mvprintw(y+i, x-arr[i].size(), arr[i].c_str());
     }
     return;
@@ -70,7 +70,7 @@ std::string dayssince(date::sys_days since, int offset) {
     return date::format("%m/%d %a", since);
 }
 
-void randdatetime(std::string target, std::string time) {
+void randdatetime(const std::string &target, std::string time) {
     int timer = 0;
     while (timer < 2500) {
         drawdatetime(target, time);
