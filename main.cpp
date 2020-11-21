@@ -46,12 +46,13 @@ int handle_input(std::vector<option_t> &optionsList)
 void startDay(int day)
 {
     std::vector<option_t> optionsList{};
-    std::string currentEvent = calendar[day];               // keep track of current event, start at the first event
+    std::string currentEvent = calendar[day];          // keep track of current event, start at the first event
     event *cur = eventTree.find(currentEvent)->second; // create event pointer, point at first event
+    erase();
+    drawborder();
+    randdatetime(dayssince(date::August/1/2019, day), "After School");
     while (cur != eventTree.end()->second)
     { // as long as cur points to a valid event, do game loop
-        erase();
-        drawborder();
         mvprintwrap(10, 20, X - 40, cur->getDesc());
         refresh();
         auto children = cur->getChildren();
@@ -76,6 +77,9 @@ void startDay(int day)
             flags.insert(flag);
         }
         optionsList.clear();
+        erase();
+        drawborder();
+        drawdatetime(dayssince(date::August/1/2019, day), "After School");
         refresh();
     }
     throw currentEvent;
@@ -89,7 +93,6 @@ void init_ncurses()
     cbreak();
     noecho();
     keypad(stdscr, TRUE);
-    scrollok(stdscr, TRUE);
     getmaxyx(stdscr, Y, X);
     refresh();
 }
