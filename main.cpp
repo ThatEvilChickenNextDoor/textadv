@@ -79,7 +79,7 @@ void startDay(const std::vector<std::string> &calendar, int day, bool unknownTim
         {
             flags.insert(flag);
         }
-        optionsList.clear();
+        
         if (optionsList[choice].onClickText != "")
         {
             erase();
@@ -89,8 +89,10 @@ void startDay(const std::vector<std::string> &calendar, int day, bool unknownTim
             else
                 drawdatetime("\?\?/\?\? \?\?\?", "Unknown");
             mvprintwrap(10, 20, X - 40, optionsList[choice].onClickText);
+            refresh();
             getch();
         }
+        optionsList.clear();
         erase();
         drawborder();
         if (!unknownTime)
@@ -136,14 +138,31 @@ int main()
     init_ncurses();
     std::vector<std::string> introCalendar, calendar;
     // intro event
-    new event("intro000", "You awake to find yourself standing in a vast, boundless desert.", {option_t{.text{"..."}, .next{"intro001"}}});
-    new event("intro001", "Every so often, the wind picks up a handful of sand and throws it across the dunes.", {option_t{.text{"..."}, .next{"intro001"}}});
+    new event("intro000", "You awake to find yourself standing in a vast, boundless desert.", {option_t{.text{"..."}, .onClickText{"..."}, .next{"intro001"}}});
+    new event("intro001", "Every so often, the wind picks up a handful of sand and throws it across the dunes.", {option_t{.text{"..."}, .next{"introEnd"}}});
     new event("introEnd", "The winds shift.", {});
+    new event("intro100", "You've been here for a very long time.", {option_t{.text{"I..."}, .onClickText{"...where am I?"}, .next{"introEnd"}}});
+    new event("intro200", "A strong gust kicks up a cloud of dust.\nFor an instant, it looks like a familiar silouette.", {
+        option_t{.effects{"m"}, .text{"\"...Michael?"}, .onClickText{"You reach out, but it is gone."}, .next{"introEnd"}},
+        option_t{.effects{"t"}, .text{"\"...Taylor?"}, .onClickText{"You reach out, but it is gone."}, .next{"introEnd"}},
+        option_t{.effects{"r"}, .text{"\"...Reehan?"}, .onClickText{"You reach out, but it is gone."}, .next{"introEnd"}},
+        option_t{.effects{"j"}, .text{"\"...Julia?"}, .onClickText{"You reach out, but it is gone."}, .next{"introEnd"}}
+        });
     introCalendar.push_back("intro000");
-    introCalendar.push_back("intro000");
-    // startCalendar(introCalendar, true);
+    introCalendar.push_back("intro100");
+    introCalendar.push_back("intro200");
+    startCalendar(introCalendar, true);
+    std::string chara;
+    if (flags.count("m"))
+        chara = "Michael";
+    else if (flags.count("t"))
+        chara = "Taylor";
+    else if (flags.count("r"))
+        chara = "Reehan";
+    else
+        chara = "Julia";
     // initialize events and load into calendar
-    makeEvents();
+    makeEvents(chara);
     calendar.push_back("event000");
     calendar.push_back("event000");
     calendar.push_back("newthing");

@@ -8,7 +8,7 @@ struct option_t
     std::vector<std::string> effects{};
     std::string prereq{};
     std::string text{};
-    std::string onClickText{};
+    const std::string onClickText{};
     std::string next{};
 };
 
@@ -24,5 +24,5 @@ private:
     std::vector<option_t> children{};
 };
 
-void makeEvents();
+void makeEvents(std::string chara);
 #endif

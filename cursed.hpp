@@ -13,7 +13,7 @@
 #include <thread>
 #include <chrono>
 
-void mvprintascii(int y, int x, std::vector<std::string> arr)
+void mvprintascii(int y, int x, const std::vector<std::string> &arr)
 {
     for (std::size_t i = 0; i < arr.size(); i++)
     {
@@ -22,7 +22,7 @@ void mvprintascii(int y, int x, std::vector<std::string> arr)
     return;
 }
 
-void mvprintasciiright(int y, int x, std::vector<std::string> arr)
+void mvprintasciiright(int y, int x, const std::vector<std::string> &arr)
 {
     for (std::size_t i = 0; i < arr.size(); i++)
     {
@@ -41,7 +41,7 @@ void drawborder()
     return;
 }
 
-void mvprintwrap(int y, int x, int wrap, std::string text)
+void mvprintwrap(int y, int x, int wrap, const std::string &text)
 {
     int offset = 0;
     for (char c : text)
@@ -59,13 +59,13 @@ void mvprintwrap(int y, int x, int wrap, std::string text)
             offset = 0;
             y++;
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(10));
         refresh();
     }
     return;
 }
 
-void drawdatetime(std::string date, std::string time)
+void drawdatetime(const std::string &date, const std::string &time)
 {
     mvprintw(1, 2, date.c_str());
     printw(" ");
@@ -80,7 +80,7 @@ std::string dayssince(date::sys_days since, int offset)
     return date::format("%m/%d %a", since);
 }
 
-void randdatetime(const std::string &target, std::string time)
+void randdatetime(const std::string &target, const std::string &time)
 {
     int timer = 0;
     while (timer < 2500)
@@ -129,7 +129,7 @@ void randdatetime(const std::string &target, std::string time)
         }
         mvprintw(1, 8, day);
         refresh();
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(10));
         timer += 10;
     }
     drawdatetime(target, time);

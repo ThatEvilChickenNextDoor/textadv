@@ -17,14 +17,14 @@ event::event(std::string name, std::string desc, std::vector<option_t> children)
     eventTree.insert({name, this}); // event constructor, adds event/pointer pair to eventTree on creation
 }
 
-void makeEvents()
+void makeEvents(std::string chara)
 { // makes events
     new event(
         "event000",
         "This is the beginning of the story!",
         {option_t{
              .effects{"flag"},
-             .text{"Option 1"},
+             .text{"Hi " + chara},
              .next{"event001"}},
          option_t{
              .prereq{"flag"},
