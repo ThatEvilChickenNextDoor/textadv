@@ -43,14 +43,17 @@ int handle_input(std::vector<option_t> &optionsList)
     }
 }
 
-void startDay(int day)
+void startDay(const std::vector<std::string> &calendar, int day, bool unknownTime)
 {
     std::vector<option_t> optionsList{};
     std::string currentEvent = calendar[day];          // keep track of current event, start at the first event
     event *cur = eventTree.find(currentEvent)->second; // create event pointer, point at first event
     erase();
     drawborder();
-    randdatetime(dayssince(date::August/1/2019, day), "After School");
+    if (!unknownTime)
+        randdatetime(dayssince(date::August / 1 / 2019, day), "After School");
+    else
+        randdatetime("\?\?/\?\? \?\?\?", "Unknown");
     while (cur != eventTree.end()->second)
     { // as long as cur points to a valid event, do game loop
         mvprintwrap(10, 20, X - 40, cur->getDesc());
@@ -77,9 +80,23 @@ void startDay(int day)
             flags.insert(flag);
         }
         optionsList.clear();
+        if (optionsList[choice].onClickText != "")
+        {
+            erase();
+            drawborder();
+            if (!unknownTime)
+                drawdatetime(dayssince(date::August / 1 / 2019, day), "After School");
+            else
+                drawdatetime("\?\?/\?\? \?\?\?", "Unknown");
+            mvprintwrap(10, 20, X - 40, optionsList[choice].onClickText);
+            getch();
+        }
         erase();
         drawborder();
-        drawdatetime(dayssince(date::August/1/2019, day), "After School");
+        if (!unknownTime)
+            drawdatetime(dayssince(date::August / 1 / 2019, day), "After School");
+        else
+            drawdatetime("\?\?/\?\? \?\?\?", "Unknown");
         refresh();
     }
     throw currentEvent;
@@ -97,29 +114,41 @@ void init_ncurses()
     refresh();
 }
 
-int main()
+void startCalendar(const std::vector<std::string> &calendar, bool unknownTime)
 {
-    init_ncurses();
-    // initialize events and load into calendar
-    makeEvents();
-    calendar.push_back("event000");
-    calendar.push_back("event000");
-    calendar.push_back("newthing");
-    // play events from calendar
     for (std::size_t i = 0; i < calendar.size(); i++)
     {
         try
         {
-            startDay(i);
+            startDay(calendar, i, unknownTime);
         }
         catch (const std::string &e)
         {
             endwin();
             std::cout << "Crash happened on day " << i << std::endl;
             std::cout << "Event not found: " << e << std::endl;
-            return 1;
+            exit(1);
         }
     }
+}
+int main()
+{
+    init_ncurses();
+    std::vector<std::string> introCalendar, calendar;
+    // intro event
+    new event("intro000", "You awake to find yourself standing in a vast, boundless desert.", {option_t{.text{"..."}, .next{"intro001"}}});
+    new event("intro001", "Every so often, the wind picks up a handful of sand and throws it across the dunes.", {option_t{.text{"..."}, .next{"intro001"}}});
+    new event("introEnd", "The winds shift.", {});
+    introCalendar.push_back("intro000");
+    introCalendar.push_back("intro000");
+    // startCalendar(introCalendar, true);
+    // initialize events and load into calendar
+    makeEvents();
+    calendar.push_back("event000");
+    calendar.push_back("event000");
+    calendar.push_back("newthing");
+    // play events from calendar
+    startCalendar(calendar, false);
     endwin();
     return 0;
 }
