@@ -43,7 +43,9 @@ void drawborder()
 
 void mvprintwrap(int y, int x, int wrap, const std::string &text)
 {
+    bool skip = false;
     int offset = 0;
+    flushinp();
     for (char c : text)
     {
         move(y, x + offset);
@@ -59,9 +61,15 @@ void mvprintwrap(int y, int x, int wrap, const std::string &text)
             offset = 0;
             y++;
         }
-        //std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        refresh();
+        if (!skip){
+            nodelay(stdscr, true);
+            skip = (getch() == '\n');
+            nodelay(stdscr, false);
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            refresh();
+        }
     }
+    refresh();
     return;
 }
 
@@ -82,6 +90,8 @@ std::string dayssince(date::sys_days since, int offset)
 
 void randdatetime(const std::string &target, const std::string &time)
 {
+    bool skip = false;
+    flushinp();
     int timer = 0;
     while (timer < 2500)
     {
@@ -129,7 +139,13 @@ void randdatetime(const std::string &target, const std::string &time)
         }
         mvprintw(1, 8, day);
         refresh();
-        //std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+        nodelay(stdscr, true);
+        skip = (getch() == '\n');
+        nodelay(stdscr, false);
+        if (skip)
+            break;
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         timer += 10;
     }
     drawdatetime(target, time);
