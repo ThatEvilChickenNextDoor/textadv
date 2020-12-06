@@ -8,7 +8,7 @@ struct option_t
     std::vector<std::string> effects{};
     std::string prereq{};
     std::string text{};
-    const std::string onClickText{};
+    std::string onClickText{};
     std::string next{};
 };
 
