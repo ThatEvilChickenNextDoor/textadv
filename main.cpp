@@ -10,12 +10,15 @@ int X, Y; // global screen width and height
 int handle_input(std::vector<option_t> &optionsList)
 {
     unsigned int choice = 0;
+    for (std::size_t i = 0; i < optionsList.size(); i++)
+        {
+            mvprintwrap(20 + i, 20, X - 40, optionsList[i].text);
+        }
     while (1)
     {
         for (std::size_t i = 0; i < optionsList.size(); i++)
         {
             mvaddch(20 + i, 18, ' ');
-            mvprintwrap(20 + i, 20, X - 40, optionsList[i].text);
         }
         mvaddch(20 + choice, 18, '>');
         refresh();
@@ -66,7 +69,22 @@ void startDay(const std::vector<std::string> &calendar, int day, bool unknownTim
         }
         for (option_t option : children)
         { // populate valid options
-            if (flags.count(option.prereq))
+            bool prereqs_met = true;
+            for (std::string req : option.prereq){
+                if (req[0] == '-') {
+                    req.erase(req.begin());
+                    if (flags.count(req) != 0) {
+                        prereqs_met = false;
+                        break;
+                    } 
+                } else {
+                    if (flags.count(req) == 0) {
+                        prereqs_met = false;
+                        break;
+                    }       
+                }
+            }
+            if (prereqs_met)
             {
                 optionsList.push_back(option);
             }
@@ -79,7 +97,7 @@ void startDay(const std::vector<std::string> &calendar, int day, bool unknownTim
         {
             flags.insert(flag);
         }
-        
+
         if (optionsList[choice].onClickText != "")
         {
             erase();
@@ -133,21 +151,12 @@ void startCalendar(const std::vector<std::string> &calendar, bool unknownTime)
         }
     }
 }
+
 int main()
 {
     init_ncurses();
     std::vector<std::string> introCalendar, calendar;
-    // intro event
-    new event("intro000", "You awake to find yourself standing in a vast, boundless desert.", {option_t{.text{"..."}, .onClickText{"..."}, .next{"intro001"}}});
-    new event("intro001", "Every so often, the wind picks up a handful of sand and throws it across the dunes.", {option_t{.text{"..."}, .next{"introEnd"}}});
-    new event("introEnd", "The winds shift.", {});
-    new event("intro100", "You've been here for a very long time.", {option_t{.text{"I..."}, .onClickText{"...where am I?"}, .next{"introEnd"}}});
-    new event("intro200", "A strong gust kicks up a cloud of dust.\nFor an instant, it looks like a familiar silouette.", {
-        option_t{.effects{"m"}, .text{"\"...Michael?"}, .onClickText{"You reach out, but it is gone."}, .next{"introEnd"}},
-        option_t{.effects{"t"}, .text{"\"...Taylor?"}, .onClickText{"You reach out, but it is gone."}, .next{"introEnd"}},
-        option_t{.effects{"r"}, .text{"\"...Reehan?"}, .onClickText{"You reach out, but it is gone."}, .next{"introEnd"}},
-        option_t{.effects{"j"}, .text{"\"...Julia?"}, .onClickText{"You reach out, but it is gone."}, .next{"introEnd"}}
-        });
+    makeIntroCalendar();
     introCalendar.push_back("intro000");
     introCalendar.push_back("intro100");
     introCalendar.push_back("intro200");
