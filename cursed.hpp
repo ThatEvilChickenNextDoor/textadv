@@ -50,27 +50,31 @@ void mvprintwrap(int y, int x, int wrap, const std::string &text)
     for (char c : text)
     {
         // check for special directive
-        if (c == '#' && !special) {
+        if (c == '#' && !special)
+        {
             special = true; // set special flag and look at next character
             continue;
         }
         // execute special action
-        if (special) {
+        if (special)
+        {
             special = false; // reset the special flag
-            switch(c) {
-                case 'R':
-                    attron(COLOR_PAIR(1));
-                    continue;
-                case 'G':
-                    attron(COLOR_PAIR(2));
-                    continue;
-                case 'B':
-                    attron(COLOR_PAIR(3));
-                    continue;
-                case 'W':
-                    attroff(COLOR_PAIR(1));
-                    continue;
-                default: break; // not valid directive, continue to print the character
+            switch (c)
+            {
+            case 'R':
+                attron(COLOR_PAIR(1));
+                continue;
+            case 'G':
+                attron(COLOR_PAIR(2));
+                continue;
+            case 'B':
+                attron(COLOR_PAIR(3));
+                continue;
+            case 'W':
+                attroff(COLOR_PAIR(1));
+                continue;
+            default:
+                break; // not valid directive, continue to print the character
             }
         }
         move(y, x + offset); // move cursor to next space
@@ -89,7 +93,8 @@ void mvprintwrap(int y, int x, int wrap, const std::string &text)
             y++;
         }
         // handle animation
-        if (!skip){
+        if (!skip)
+        {
             nodelay(stdscr, true);
             skip = (getch() == '\n');
             nodelay(stdscr, false);

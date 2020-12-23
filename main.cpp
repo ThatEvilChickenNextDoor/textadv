@@ -11,9 +11,9 @@ int handle_input(std::vector<option_t> &optionsList)
 {
     unsigned int choice = 0;
     for (std::size_t i = 0; i < optionsList.size(); i++)
-        {
-            mvprintwrap(20 + i, 20, X - 40, optionsList[i].text);
-        }
+    {
+        mvprintwrap(20 + i, 20, X - 40, optionsList[i].text);
+    }
     while (1)
     {
         for (std::size_t i = 0; i < optionsList.size(); i++)
@@ -57,33 +57,39 @@ void startDay(const std::vector<std::string> &calendar, int day, bool unknownTim
         randdatetime(dayssince(date::August / 1 / 2019, day), "After School");
     else
         randdatetime("\?\?/\?\? \?\?\?", "Unknown");
-    while (cur != eventTree.end()->second)
-    { // as long as cur points to a valid event, do game loop
+    while (cur != eventTree.end()->second) // as long as cur points to a valid event, do game loop
+    {
         mvprintwrap(10, 20, X - 40, cur->getDesc());
         refresh();
         auto children = cur->getChildren();
-        if (children.empty())
-        { // if event has no children, end the day
+        if (children.empty()) // if event has no children, end the day
+        {
             getch();
             return;
         }
-        for (option_t option : children)
-        { // populate valid options
+        for (option_t option : children) // populate valid options
+        {
             // check for prereqs
             bool prereqs_met = true;
-            for (std::string req : option.prereq){
+            for (std::string req : option.prereq)
+            {
                 // if first character is -, check that the flag is NOT set instead
-                if (req[0] == '-') {
+                if (req[0] == '-')
+                {
                     req.erase(req.begin()); // remove the first -
-                    if (flags.count(req) != 0) {
+                    if (flags.count(req) != 0)
+                    {
                         prereqs_met = false;
                         break;
-                    } 
-                } else {
-                    if (flags.count(req) == 0) {
+                    }
+                }
+                else
+                {
+                    if (flags.count(req) == 0)
+                    {
                         prereqs_met = false;
                         break;
-                    }       
+                    }
                 }
             }
             if (prereqs_met)
@@ -99,10 +105,13 @@ void startDay(const std::vector<std::string> &calendar, int day, bool unknownTim
         for (std::string flag : optionsList[choice].effects)
         {
             // if first character is -, try to REMOVE the flag instead
-            if (flag[0] == '-') {
+            if (flag[0] == '-')
+            {
                 flag.erase(flag.begin());
                 flags.erase(flag);
-            } else {
+            }
+            else
+            {
                 flags.insert(flag);
             }
         }
