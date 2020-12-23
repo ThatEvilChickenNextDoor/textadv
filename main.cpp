@@ -180,8 +180,8 @@ int main()
     std::vector<std::string> introCalendar, calendar;
     makeIntroCalendar();
     introCalendar.push_back("intro000");
-    introCalendar.push_back("intro100");
-    introCalendar.push_back("intro200");
+    //introCalendar.push_back("intro100");
+    //introCalendar.push_back("intro200");
     startCalendar(introCalendar, true);
     std::string chara;
     if (flags.count("m"))
