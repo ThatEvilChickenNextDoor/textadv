@@ -44,11 +44,37 @@ void drawborder()
 void mvprintwrap(int y, int x, int wrap, const std::string &text)
 {
     bool skip = false;
+    bool special = false;
     int offset = 0;
     flushinp();
     for (char c : text)
     {
-        move(y, x + offset);
+        // check for special directive
+        if (c == '#' && !special) {
+            special = true; // set special flag and look at next character
+            continue;
+        }
+        // execute special action
+        if (special) {
+            special = false; // reset the special flag
+            switch(c) {
+                case 'R':
+                    attron(COLOR_PAIR(1));
+                    continue;
+                case 'G':
+                    attron(COLOR_PAIR(2));
+                    continue;
+                case 'B':
+                    attron(COLOR_PAIR(3));
+                    continue;
+                case 'W':
+                    attroff(COLOR_PAIR(1));
+                    continue;
+                default: break; // not valid directive, continue to print the character
+            }
+        }
+        move(y, x + offset); // move cursor to next space
+        // handle newlines
         if (c == '\n')
         {
             offset = 0;
@@ -56,11 +82,13 @@ void mvprintwrap(int y, int x, int wrap, const std::string &text)
             continue;
         }
         addch(c);
+        // handle wrapping
         if (++offset == wrap)
         {
             offset = 0;
             y++;
         }
+        // handle animation
         if (!skip){
             nodelay(stdscr, true);
             skip = (getch() == '\n');
@@ -69,6 +97,7 @@ void mvprintwrap(int y, int x, int wrap, const std::string &text)
             refresh();
         }
     }
+    attroff(COLOR_PAIR(1));
     refresh();
     return;
 }
