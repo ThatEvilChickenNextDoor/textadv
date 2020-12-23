@@ -60,9 +60,16 @@ void startDay(const std::vector<std::string> &calendar, int day, bool unknownTim
         randdatetime("\?\?/\?\? \?\?\?", "Unknown");
     while (cur != eventTree.end()->second) // as long as cur points to a valid event, do game loop
     {
-        if (cur->time != "") {
-            time = cur->time;
-            drawdatetime(dayssince(date::August / 1 / 2019, day), time);
+        if (cur->time != "")
+        {
+            if (!unknownTime)
+            {
+                time = cur->time;
+                erase();
+                drawborder();
+                drawdatetime(dayssince(date::August / 1 / 2019, day), time);
+                refresh();
+            }
         }
         mvprintwrap(10, 20, X - 40, cur->getDesc());
         refresh();
@@ -187,7 +194,7 @@ int main()
     introCalendar.push_back("intro000");
     //introCalendar.push_back("intro100");
     //introCalendar.push_back("intro200");
-    startCalendar(introCalendar, true);
+    // startCalendar(introCalendar, true);
     /*std::string chara;
     if (flags.count("m"))
         chara = "Michael";

@@ -133,13 +133,65 @@ void makeIntroCalendar()
     // wake me up inside
     new event(
         "intro100",
-        "It's the first day of classes of your sophomore year.",
+        "It's the first day of classes this semester.",
         {option_t{.text{""}, .next{"intro101"}}},
         "Morning");
     new event(
         "intro101",
-        "You just moved in the day before, and you haven't had a chance to see your friends yet.",
-        {option_t{.text{""}, .next{"intro101"}}});
+        "You just moved back in the day before, and you haven't had a chance to see your friends yet.",
+        {option_t{.text{""}, .next{"intro102"}}});
+    new event(
+        "intro102",
+        "*Knock knock knock*",
+        {option_t{.text{""}, .next{"intro103"}}});
+    new event(
+        "intro103",
+        "Someone's at the door.",
+        {option_t{
+             .text{"Open the door"},
+             .onClickText{"You open the door."},
+             .next{"intro104"}},
+         option_t{
+             .text{"..."},
+             .next{"intro102"}}});
+    new event(
+        "intro104",
+        "Michael\n\nHey Kerry!",
+        {option_t{.text{""}, .next{"intro105"}}});
+    new event(
+        "intro105",
+        "Michael\n\nGood morning! How are you?",
+        {option_t{
+             .text{"\"I am.\""},
+             .next{"intro106"}},
+         option_t{
+             .text{"\"Yes.\""},
+             .next{"intro106"}}});
+    new event(
+        "intro106",
+        "Michael\n\nUh, that's great.",
+        {option_t{.text{""}, .next{"intro107"}}});
+    new event(
+        "intro107",
+        "Of course, Michael is wearing a white shirt. It's kind of his thing, I guess?...",
+        {option_t{.text{""}, .next{"intro108"}}});
+    new event(
+        "intro108",
+        "Michael\n\nAnyways, let's get going.",
+        {option_t{.text{""}, .next{"intro109"}}});
+    new event(
+        "intro109",
+        "The two of you get breakfast and then head to class.",
+        {option_t{.text{""}, .next{"intro110"}}});
+    new event(
+        "intro110",
+        "Class\n\nOhayou gozaimasu!",
+        {option_t{.text{""}, .next{"intro111"}}},
+        "Class");
+    new event(
+        "intro111",
+        "Kitamura-sensei\n\nOhayou. Welcome back to Japanese class everyone, I hope you didn't forget too much over break?",
+        {option_t{.text{""}, .next{"intro112"}}});
     /*new event("introEnd", "The winds shift.", {});
     new event("intro100", "You've been here for a very long time.", {option_t{.text{"I..."}, .onClickText{"...where am I?"}, .next{"introEnd"}}});
     new event(
