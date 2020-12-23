@@ -130,8 +130,17 @@ void makeIntroCalendar()
         "intro019",
         "Igor chuckled, walked out of my room, and I woke up.",
         {});
-
-    new event("introEnd", "The winds shift.", {});
+    // wake me up inside
+    new event(
+        "intro100",
+        "It's the first day of classes of your sophomore year.",
+        {option_t{.text{""}, .next{"intro101"}}},
+        "Morning");
+    new event(
+        "intro101",
+        "You just moved in the day before, and you haven't had a chance to see your friends yet.",
+        {option_t{.text{""}, .next{"intro101"}}});
+    /*new event("introEnd", "The winds shift.", {});
     new event("intro100", "You've been here for a very long time.", {option_t{.text{"I..."}, .onClickText{"...where am I?"}, .next{"introEnd"}}});
     new event(
         "intro200",
@@ -155,7 +164,7 @@ void makeIntroCalendar()
              .effects{"j"},
              .text{"\"...Julia?"},
              .onClickText{"You reach out, but it is gone."},
-             .next{"introEnd"}}});
+             .next{"introEnd"}}});*/
 }
 
 void makeEvents(std::string chara) // makes events

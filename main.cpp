@@ -51,16 +51,18 @@ void startDay(const std::vector<std::string> &calendar, int day, bool unknownTim
     std::vector<option_t> optionsList{};
     std::string currentEvent = calendar[day];          // keep track of current event, start at the first event
     event *cur = eventTree.find(currentEvent)->second; // create event pointer, point at first event
+    std::string time = "Morning";
     erase();
     drawborder();
     if (!unknownTime)
-        randdatetime(dayssince(date::August / 1 / 2019, day), "After School");
+        randdatetime(dayssince(date::August / 1 / 2019, day), time);
     else
         randdatetime("\?\?/\?\? \?\?\?", "Unknown");
     while (cur != eventTree.end()->second) // as long as cur points to a valid event, do game loop
     {
         if (cur->time != "") {
-            drawdatetime(dayssince(date::August / 1 / 2019, day), cur->time);
+            time = cur->time;
+            drawdatetime(dayssince(date::August / 1 / 2019, day), time);
         }
         mvprintwrap(10, 20, X - 40, cur->getDesc());
         refresh();
@@ -118,13 +120,13 @@ void startDay(const std::vector<std::string> &calendar, int day, bool unknownTim
                 flags.insert(flag);
             }
         }
-
+        // display onclick text if any
         if (optionsList[choice].onClickText != "")
         {
             erase();
             drawborder();
             if (!unknownTime)
-                drawdatetime(dayssince(date::August / 1 / 2019, day), "After School");
+                drawdatetime(dayssince(date::August / 1 / 2019, day), time);
             else
                 drawdatetime("\?\?/\?\? \?\?\?", "Unknown");
             mvprintwrap(10, 20, X - 40, optionsList[choice].onClickText);
@@ -135,7 +137,7 @@ void startDay(const std::vector<std::string> &calendar, int day, bool unknownTim
         erase();
         drawborder();
         if (!unknownTime)
-            drawdatetime(dayssince(date::August / 1 / 2019, day), "After School");
+            drawdatetime(dayssince(date::August / 1 / 2019, day), time);
         else
             drawdatetime("\?\?/\?\? \?\?\?", "Unknown");
         refresh();
@@ -186,7 +188,7 @@ int main()
     //introCalendar.push_back("intro100");
     //introCalendar.push_back("intro200");
     startCalendar(introCalendar, true);
-    std::string chara;
+    /*std::string chara;
     if (flags.count("m"))
         chara = "Michael";
     else if (flags.count("t"))
@@ -194,12 +196,14 @@ int main()
     else if (flags.count("r"))
         chara = "Reehan";
     else
-        chara = "Julia";
+        chara = "Julia";*/
     // initialize events and load into calendar
-    makeEvents(chara);
+    /*makeEvents(chara);
     calendar.push_back("event000");
     calendar.push_back("event000");
-    calendar.push_back("newthing");
+    calendar.push_back("newthing");*/
+
+    calendar.push_back("intro100");
     // play events from calendar
     startCalendar(calendar, false);
     endwin();
