@@ -12,16 +12,17 @@ struct option_t
     std::string next{};
 };
 
-class event
-{ // event structure forward declaration
-public:
-    std::string getDesc();
-    std::vector<option_t> getChildren();
-    event(std::string name, std::string desc, std::vector<option_t> children);
-
+class event // event structure forward declaration
+{
 private:
     std::string desc{};
     std::vector<option_t> children{};
+public:
+    std::string getDesc();
+    std::vector<option_t> getChildren();
+    std::string time{};
+    event(std::string name, std::string desc, std::vector<option_t> children);
+    event(std::string name, std::string desc, std::vector<option_t> children, std::string time);
 };
 
 void makeIntroCalendar();

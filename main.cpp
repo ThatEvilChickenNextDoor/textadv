@@ -59,6 +59,9 @@ void startDay(const std::vector<std::string> &calendar, int day, bool unknownTim
         randdatetime("\?\?/\?\? \?\?\?", "Unknown");
     while (cur != eventTree.end()->second) // as long as cur points to a valid event, do game loop
     {
+        if (cur->time != "") {
+            drawdatetime(dayssince(date::August / 1 / 2019, day), cur->time);
+        }
         mvprintwrap(10, 20, X - 40, cur->getDesc());
         refresh();
         auto children = cur->getChildren();

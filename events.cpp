@@ -17,6 +17,11 @@ event::event(std::string name, std::string desc, std::vector<option_t> children)
     eventTree.insert({name, this}); // event constructor, adds event/pointer pair to eventTree on creation
 }
 
+event::event(std::string name, std::string desc, std::vector<option_t> children, std::string time) : desc(desc), children(children), time(time)
+{
+    eventTree.insert({name, this});
+}
+
 void makeIntroCalendar()
 {
     // intro event
