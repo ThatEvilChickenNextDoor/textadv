@@ -190,10 +190,9 @@ int main()
 {
     init_ncurses();
     std::vector<std::string> introCalendar, calendar;
+    makeCommon();
     makeIntroCalendar();
     introCalendar.push_back("intro000");
-    //introCalendar.push_back("intro100");
-    //introCalendar.push_back("intro200");
     // startCalendar(introCalendar, true);
     /*std::string chara;
     if (flags.count("m"))
@@ -210,7 +209,7 @@ int main()
     calendar.push_back("event000");
     calendar.push_back("newthing");*/
 
-    calendar.push_back("intro100");
+    calendar.push_back("intro112");
     // play events from calendar
     startCalendar(calendar, false);
     endwin();

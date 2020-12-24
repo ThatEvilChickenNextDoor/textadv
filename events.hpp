@@ -25,6 +25,7 @@ public:
     event(std::string name, std::string desc, std::vector<option_t> children, std::string time);
 };
 
+void makeCommon();
 void makeIntroCalendar();
 void makeEvents(std::string chara);
 #endif

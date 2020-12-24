@@ -22,10 +22,35 @@ event::event(std::string name, std::string desc, std::vector<option_t> children,
     eventTree.insert({name, this});
 }
 
+void makeCommon()
+{
+    new event(
+        "afterClassAction",
+        "It's after class. What will you do?",
+        {option_t{.text{"Talk"}, .next{"afterClassTalk"}},
+        option_t{.text{"Sleep"}, .next{"sleep"}}},
+        "After Class");
+    new event(
+        "afterClassTalk",
+        "Who do you want to talk to?",
+        {option_t{
+             .effects{"mTalk1", "-mTalk0", "-mCanTalk", "-rCanTalk", "-tCanTalk", "-jCanTalk"},
+             .prereq{"mCanTalk", "mTalk0"},
+             .text{"Michael"},
+             .next{"mTalk000"}},
+         option_t{.text{"Go back"}, .next{"afterClassAction"}}});
+    new event(
+        "sleep",
+        "You decide to go to sleep.",
+        {});
+}
 void makeIntroCalendar()
 {
     // intro event
-    new event("intro000", "You open your eyes. Something is off.", {option_t{.text{"..."}, .next{"intro001"}}});
+    new event(
+        "intro000",
+        "You open your eyes. Something is off.",
+        {option_t{.text{"..."}, .next{"intro001"}}});
     new event(
         "intro001",
         "What could it be? You take a moment to gather your thoughts. It must be...",
@@ -48,28 +73,20 @@ void makeIntroCalendar()
              .onClickText{"Ah yes, of course. There's a old man sitting hunched over in your chair, with bulging eyes and a disturbingly long nose. He wasn't there before."},
              .next{"intro001"}},
          option_t{
-             .prereq{{"introBlue", "introQuiet", "introIgor"}},
+             .prereq{"introBlue", "introQuiet", "introIgor"},
              .text{"Curious."},
              .next{"intro002"}}});
     new event("intro002", "The old man coughs quietly, and turns his head to look at you. You try to get out of bed, only to realize that you did not exist.", {option_t{.text{""}, .next{"intro003"}}});
     new event(
         "intro003",
         "Old Man\n\nAh, welcome to the Velvet Room. This place exists between dream and reality, mind and matter. My name is Igor. Do not be alarmed. I am here to guide you.",
-        {option_t{
-             .text{"Why are you in my room?"},
-             .next{"intro004"}},
-         option_t{
-             .text{"..."},
-             .next{"intro004"}}});
+        {option_t{.text{"Why are you in my room?"}, .next{"intro004"}},
+         option_t{.text{"..."}, .next{"intro004"}}});
     new event(
         "intro004",
         "Igor\n\nThe Velvet Room takes many forms. To different people, it will manifest as different places. Rest assured, the actual you is still sleeping in your bed.",
-        {option_t{
-             .text{"Am I dreaming?"},
-             .next{"intro005"}},
-         option_t{
-             .text{"..."},
-             .next{"intro005"}}});
+        {option_t{.text{"Am I dreaming?"}, .next{"intro005"}},
+         option_t{.text{"..."}, .next{"intro005"}}});
     new event(
         "intro005",
         "Igor\n\nThis is not a dream, though you are free to regard it as such, if you would prefer. Regardless, I bring words of warning, if you will hear them.",
@@ -161,12 +178,8 @@ void makeIntroCalendar()
     new event(
         "intro105",
         "Michael\n\nGood morning! How are you?",
-        {option_t{
-             .text{"\"I am.\""},
-             .next{"intro106"}},
-         option_t{
-             .text{"\"Yes.\""},
-             .next{"intro106"}}});
+        {option_t{.text{"\"I am.\""}, .next{"intro106"}},
+         option_t{.text{"\"Yes.\""}, .next{"intro106"}}});
     new event(
         "intro106",
         "Michael\n\nUh, that's great.",
@@ -192,6 +205,44 @@ void makeIntroCalendar()
         "intro111",
         "Kitamura-sensei\n\nOhayou. Welcome back to Japanese class everyone, I hope you didn't forget too much over break?",
         {option_t{.text{""}, .next{"intro112"}}});
+    new event(
+        "intro112",
+        "Class\n\n*groan*",
+        {option_t{.text{""}, .next{"intro113"}}});
+    new event(
+        "intro113",
+        "Kitamura-sensei\n\nWell, let's see how we're all doing. Wang-san?",
+        {option_t{.text{"Uh oh."}, .next{"intro114"}}});
+    new event(
+        "intro114",
+        "Kitamura-sensei\n\nHow would you greet someone in the afternoon?",
+        {option_t{.text{"\"Ohayou.\""}, .next{"intro116"}},
+         option_t{.text{"\"Konnichiwa.\""}, .next{"intro115"}},
+         option_t{.text{"\"Konbanwa.\""}, .next{"intro116"}}});
+    new event(
+        "intro115",
+        "Kitamura-sensei\n\nThat's right!",
+        {option_t{.text{"Phew."}, .next{"intro115a"}}});
+    new event(
+        "intro115a",
+        "Your academics improved a little!",
+        {option_t{.text{""}, .next{"intro117"}}});
+    new event(
+        "intro116",
+        "Kitamura-sensei\n\n...Not quite.",
+        {option_t{.text{"Oof."}, .next{"intro117"}}});
+    new event(
+        "intro117",
+        "Kitamura-sensei\n\n\"Ohayou\" is used in the morning and \"Konbanwa\" is used at night. For the afternoon, use \"Konnichiwa\".",
+        {option_t{.text{""}, .next{"intro118"}}});
+    new event(
+        "intro118",
+        "Class goes on...",
+        {option_t{
+            .effects{"mCanTalk"},
+            .text{""},
+            .next{"afterClassAction"}}});
+
     /*new event("introEnd", "The winds shift.", {});
     new event("intro100", "You've been here for a very long time.", {option_t{.text{"I..."}, .onClickText{"...where am I?"}, .next{"introEnd"}}});
     new event(
