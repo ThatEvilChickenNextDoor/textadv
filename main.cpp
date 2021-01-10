@@ -189,7 +189,7 @@ void startCalendar(const std::vector<std::string> &calendar, bool unknownTime)
 int main()
 {
     init_ncurses();
-    std::vector<std::string> introCalendar, calendar;
+    std::vector<std::string> introCalendar, calendar, testCalendar;
     makeCommon();
     makeIntroCalendar();
     introCalendar.push_back("intro000");
@@ -212,6 +212,15 @@ int main()
     calendar.push_back("intro112");
     // play events from calendar
     startCalendar(calendar, false);
+    int academics = flags.count("academics");
+    new event(
+        "test000",
+        "Your academics is " + std::to_string(academics),
+        {},
+        "Judgement"
+    );
+    testCalendar.push_back("test000");
+    startCalendar(testCalendar,false);
     endwin();
     return 0;
 }

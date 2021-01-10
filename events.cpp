@@ -217,7 +217,7 @@ void makeIntroCalendar()
         "intro114",
         "Kitamura-sensei\n\nHow would you greet someone in the afternoon?",
         {option_t{.text{"\"Ohayou.\""}, .next{"intro116"}},
-         option_t{.text{"\"Konnichiwa.\""}, .next{"intro115"}},
+         option_t{.effects{"academics", "academics"}, .text{"\"Konnichiwa.\""}, .next{"intro115"}},
          option_t{.text{"\"Konbanwa.\""}, .next{"intro116"}}});
     new event(
         "intro115",
